@@ -6,11 +6,12 @@ Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): 2025-10-14 04:03:58
 Current User's Login: hizoo5
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from hangarin import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("allauth.urls")), # allauth routes
     path('', views.home, name='home'),
     
     # Task URLs
