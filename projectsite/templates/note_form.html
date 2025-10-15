@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Hangarin{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">{{ page_title }}</h4>
+			</div>
+			<div class="card-body">
+				<form method="post">
+					{% csrf_token %}
+					
+					<div class="form-group">
+						<label for="{{ form.content.id_for_label }}">
+							Content: <span class="text-danger">*</span>
+						</label>
+						{% render_field form.content class="form-control" rows="5" placeholder="Enter note content" %}
+						{% if form.content.errors %}
+							<small class="form-text text-danger">{{ form.content.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label>
+							Task: <span class="text-danger">*</span>
+						</label>
+						<div class="input-group">
+							<input type="text" class="form-control" value="{{ parent_task.title }}" disabled readonly>
+							<div class="input-group-append">
+								<a href="{% url 'task-detail' parent_task.pk %}" class="btn btn-secondary" data-toggle="tooltip" title="View task">
+									<i class="la la-eye"></i>
+								</a>
+							</div>
+						</div>
+						<small class="form-text text-muted">This note will be added to the task: {{ parent_task.title }}</small>
+					</div>
+					
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">
+							<i class="la la-save"></i> SAVE
+						</button>
+						<a href="{% url 'task-detail' parent_task.pk %}" class="btn btn-secondary ml-2">
+							<i class="la la-times"></i> Cancel
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

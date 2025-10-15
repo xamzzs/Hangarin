@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Hangarin{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-md-10">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">{{ page_title }}</h4>
+			</div>
+			<div class="card-body">
+				<form method="post">
+					{% csrf_token %}
+					
+					<div class="form-group">
+						<label for="{{ form.title.id_for_label }}">
+							Title: <span class="text-danger">*</span>
+						</label>
+						{% render_field form.title class="form-control" placeholder="Enter task title" %}
+						{% if form.title.errors %}
+							<small class="form-text text-danger">{{ form.title.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label for="{{ form.description.id_for_label }}">
+							Description: <span class="text-danger">*</span>
+						</label>
+						{% render_field form.description class="form-control" rows="4" placeholder="Enter task description" %}
+						{% if form.description.errors %}
+							<small class="form-text text-danger">{{ form.description.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label for="{{ form.status.id_for_label }}">
+							Status: <span class="text-danger">*</span>
+						</label>
+						{% render_field form.status class="form-control" %}
+						{% if form.status.errors %}
+							<small class="form-text text-danger">{{ form.status.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label>
+							Deadline: <span class="text-danger">*</span>
+						</label>
+						<div class="row">
+							<div class="col-md-6">
+								<label for="id_deadline_date">Date:</label>
+								{% render_field form.deadline class="form-control" type="datetime-local" %}
+							</div>
+						</div>
+						<small class="form-text text-muted">Note: You can set a future ahead of server time.</small>
+						{% if form.deadline.errors %}
+							<small class="form-text text-danger">{{ form.deadline.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label for="{{ form.priority.id_for_label }}">
+							Priority: <span class="text-danger">*</span>
+						</label>
+						<div class="input-group">
+							{% render_field form.priority class="form-control" %}
+							<div class="input-group-append">
+								<a href="{% url 'priority-list' %}" class="btn btn-secondary" data-toggle="tooltip" title="View priorities" target="_blank">
+									<i class="la la-eye"></i>
+								</a>
+								<a href="{% url 'priority-add' %}" class="btn btn-success" data-toggle="tooltip" title="Add new priority" target="_blank">
+									<i class="la la-plus"></i>
+								</a>
+							</div>
+						</div>
+						{% if form.priority.errors %}
+							<small class="form-text text-danger">{{ form.priority.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label for="{{ form.category.id_for_label }}">
+							Category: <span class="text-danger">*</span>
+						</label>
+						<div class="input-group">
+							{% render_field form.category class="form-control" %}
+							<div class="input-group-append">
+								<a href="{% url 'category-list' %}" class="btn btn-secondary" data-toggle="tooltip" title="View categories" target="_blank">
+									<i class="la la-eye"></i>
+								</a>
+								<a href="{% url 'category-add' %}" class="btn btn-success" data-toggle="tooltip" title="Add new category" target="_blank">
+									<i class="la la-plus"></i>
+								</a>
+							</div>
+						</div>
+						{% if form.category.errors %}
+							<small class="form-text text-danger">{{ form.category.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<!-- SUB TASKS Section (only show when editing existing task) -->
+					{% if object %}
+					<div class="card mt-4 mb-4" style="background-color: #f8f9fa;">
+						<div class="card-header" style="background-color: #17a2b8; color: white;">
+							<h5 class="mb-0">SUB TASKS</h5>
+						</div>
+						<div class="card-body">
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>TITLE</th>
+										<th>STATUS</th>
+										<th>DELETE?</th>
+									</tr>
+								</thead>
+								<tbody id="subtasks-container">
+									{% for subtask in object.subtasks.all %}
+									<tr>
+										<td>{{ subtask.title }}</td>
+										<td>
+											{% if subtask.status == 'Pending' %}
+											<span class="badge badge-warning">Pending</span>
+											{% elif subtask.status == 'In Progress' %}
+											<span class="badge badge-info">In Progress</span>
+											{% else %}
+											<span class="badge badge-success">Completed</span>
+											{% endif %}
+										</td>
+										<td>
+											<a href="{% url 'subtask-delete' subtask.pk %}" class="text-danger">
+												<i class="la la-trash"></i>
+											</a>
+										</td>
+									</tr>
+									{% empty %}
+									<tr>
+										<td colspan="3" class="text-center text-muted">No subtasks yet</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+							<a href="{% url 'subtask-add' object.pk %}" class="btn btn-sm btn-info">
+								<i class="la la-plus"></i> Add another Sub task
+							</a>
+						</div>
+					</div>
+					
+					<!-- NOTES Section (only show when editing existing task) -->
+					<div class="card mt-4 mb-4" style="background-color: #f8f9fa;">
+						<div class="card-header" style="background-color: #17a2b8; color: white;">
+							<h5 class="mb-0">NOTES</h5>
+						</div>
+						<div class="card-body">
+							{% for note in object.notes.all %}
+							<div class="card mb-2">
+								<div class="card-body">
+									<p class="mb-1">{{ note.content }}</p>
+									<small class="text-muted">
+										<i class="la la-clock-o"></i> Created at: {{ note.created_at|date:"M d, Y H:i" }}
+									</small>
+								</div>
+							</div>
+							{% empty %}
+							<p class="text-center text-muted">No notes yet</p>
+							{% endfor %}
+							<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#addNoteModal">
+								<i class="la la-plus"></i> Add another Note
+							</button>
+						</div>
+					</div>
+					{% endif %}
+					
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">
+							<i class="la la-save"></i> SAVE
+						</button>
+						<a href="{% url 'task-list' %}" class="btn btn-secondary ml-2">
+							<i class="la la-times"></i> Cancel
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

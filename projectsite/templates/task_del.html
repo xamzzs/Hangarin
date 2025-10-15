@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hangarin - Delete Task{% endblock %}
+{% block page_title %}Delete Task{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8 offset-md-2">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">Confirm Deletion</div>
+			</div>
+			<div class="card-body">
+				<div class="alert alert-danger">
+					<h4 class="alert-heading"><i class="la la-warning"></i> Are you sure?</h4>
+					<p>Are you sure you want to delete the task: <strong>"{{ object.title }}"</strong>?</p>
+					<p class="mb-0">This action cannot be undone.</p>
+				</div>
+				<form method="POST">
+					{% csrf_token %}
+					<button type="submit" class="btn btn-danger">
+						<i class="la la-trash"></i> Delete Task
+					</button>
+					<a href="{% url 'task-list' %}" class="btn btn-secondary">
+						<i class="la la-times"></i> Cancel
+					</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

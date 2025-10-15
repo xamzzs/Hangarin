@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Categories - Hangarin{% endblock %}
+
+{% block page_title %}Categories{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="card-title">All Categories</h4>
+                    <a href="{% url 'category-add' %}" class="btn btn-primary btn-round">
+                        <i class="la la-plus"></i> Add Category
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if categories_list %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><i class="la la-keyboard-o"></i> Name</th>
+                                <th class="text-center"><i class="la la-cog"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in categories_list %}
+                            <tr>
+                                <td>
+                                    <strong>{{ category.name }}</strong>
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'category-update' category.pk %}" 
+                                       class="text-primary" 
+                                       data-toggle="tooltip" 
+                                       title="Edit Category">
+                                        Edit
+                                    </a>
+                                    <a href="{% url 'category-delete' category.pk %}" 
+                                       class="text-danger ml-2" 
+                                       data-toggle="tooltip" 
+                                       title="Delete Category">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                {% include 'includes/pagination.html' %}
+                {% endif %}
+                
+                {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="la la-info-circle la-3x mb-3"></i>
+                    <h5>No Categories Found</h5>
+                    <p class="mb-0">Start organizing your tasks by creating categories.</p>
+                    <a href="{% url 'category-add' %}" class="btn btn-primary mt-3">
+                        <i class="la la-plus"></i> Add First Category
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

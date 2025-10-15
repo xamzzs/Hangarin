@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}SubTasks - Hangarin{% endblock %}
+
+{% block page_title %}SubTasks{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="card-title">All SubTasks</h4>
+                    <a href="{% url 'subtask-add-with-parent' %}" class="btn btn-primary btn-round">
+                        <i class="la la-plus"></i> Add SubTask
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if subtasks %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><i class="la la-list"></i> Title</th>
+                                <th><i class="la la-info-circle"></i> Status</th>
+                                <th><i class="la la-tasks"></i> Parent Task</th>
+                                <th class="text-center"><i class="la la-cog"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subtask in subtasks %}
+                            <tr>
+                                <td>
+                                    <strong>{{ subtask.title }}</strong>
+                                </td>
+                                <td>
+                                    {% if subtask.status == 'Pending' %}
+                                    <span class="badge badge-warning"><i class="la la-clock-o"></i> Pending</span>
+                                    {% elif subtask.status == 'In Progress' %}
+                                    <span class="badge badge-info"><i class="la la-spinner"></i> In Progress</span>
+                                    {% elif subtask.status == 'Completed' %}
+                                    <span class="badge badge-success"><i class="la la-check"></i> Completed</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ subtask.parent_task.title }}
+                                </td>
+                                <td class="text-center">
+
+                                    <a href="{% url 'subtask-update' subtask.pk %}" 
+                                       class="text-primary ml-2" 
+                                       data-toggle="tooltip" 
+                                       title="Edit SubTask">
+                                        Edit
+                                    </a>
+                                    <a href="{% url 'subtask-delete' subtask.pk %}" 
+                                       class="text-danger ml-2" 
+                                       data-toggle="tooltip" 
+                                       title="Delete SubTask">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                {% include 'includes/pagination.html' %}
+                {% endif %}
+                
+                {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="la la-info-circle la-3x mb-3"></i>
+                    <h5>No SubTasks Found</h5>
+                    <p class="mb-3">Create your first subtask by clicking the "Add SubTask" button above.</p>
+                    <a href="{% url 'subtask-add-with-parent' %}" class="btn btn-primary mt-2">
+                        <i class="la la-plus"></i> Add SubTask
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

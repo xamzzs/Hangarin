@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tasks - Hangarin{% endblock %}
+{% block page_title %}All Tasks{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="card-title">Task List</h4>
+                    <a href="{% url 'task-add' %}" class="btn btn-primary btn-round">
+                        <i class="la la-plus"></i> Add Task
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if object_list %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Deadline</th>
+                                <th>Priority</th>
+                                <th>Category</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in object_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    <strong>{{ task.title }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ task.description|truncatewords:10 }}</small>
+                                </td>
+                                <td>
+                                    {% if task.status == 'Pending' %}
+                                    <span class="badge badge-warning">Pending</span>
+                                    {% elif task.status == 'In Progress' %}
+                                    <span class="badge badge-info">In Progress</span>
+                                    {% else %}
+                                    <span class="badge badge-success">Completed</span>
+                                    {% endif %}
+                                </td>
+                                
+                                <td>{{ task.deadline|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if task.priority.name == 'Critical' or task.priority.name == 'High' %}
+                                    <span class="badge badge-danger">{{ task.priority.name }}</span>
+                                    {% elif task.priority.name == 'Medium' %}
+                                    <span class="badge badge-warning">{{ task.priority.name }}</span>
+                                    {% else %}
+                                    <span class="badge badge-success">{{ task.priority.name }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ task.category.name }}</td>
+                                <td class="text-center">
+                                    <a href="{% url 'task-update' task.pk %}" 
+                                       class="text-primary ml-2" 
+                                       data-toggle="tooltip" 
+                                       title="Edit Task">
+                                        Edit
+                                    </a>
+                                    <a href="{% url 'task-delete' task.pk %}" 
+                                       class="text-danger ml-2" 
+                                       data-toggle="tooltip" 
+                                       title="Delete Task">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                {% include 'includes/pagination.html' %}
+                {% endif %}
+                
+                {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="la la-info-circle la-3x mb-3"></i>
+                    <h5>No Tasks Found</h5>
+                    <p class="mb-0">Create your first task to get started!</p>
+                    <a href="{% url 'task-add' %}" class="btn btn-primary mt-3">
+                        <i class="la la-plus"></i> Add First Task
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

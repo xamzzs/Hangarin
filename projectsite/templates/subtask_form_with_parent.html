@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Hangarin{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">{{ page_title }}</h4>
+			</div>
+			<div class="card-body">
+				<form method="post">
+					{% csrf_token %}
+					
+					<div class="form-group">
+						<label for="{{ form.title.id_for_label }}">
+							Title: <span class="text-danger">*</span>
+						</label>
+						{% render_field form.title class="form-control" placeholder="Enter subtask title" %}
+						{% if form.title.errors %}
+							<small class="form-text text-danger">{{ form.title.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label for="{{ form.status.id_for_label }}">
+							Status: <span class="text-danger">*</span>
+						</label>
+						{% render_field form.status class="form-control" %}
+						{% if form.status.errors %}
+							<small class="form-text text-danger">{{ form.status.errors.0 }}</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<label for="{{ form.parent_task.id_for_label }}">
+							Parent task: <span class="text-danger">*</span>
+						</label>
+						<div class="input-group">
+							{% render_field form.parent_task class="form-control" %}
+							<div class="input-group-append">
+								<a href="{% url 'task-list' %}" class="btn btn-secondary" data-toggle="tooltip" title="View tasks" target="_blank">
+									<i class="la la-eye"></i>
+								</a>
+								<a href="{% url 'task-add' %}" class="btn btn-success" data-toggle="tooltip" title="Add new task" target="_blank">
+									<i class="la la-plus"></i>
+								</a>
+							</div>
+						</div>
+						{% if form.parent_task.errors %}
+							<small class="form-text text-danger">{{ form.parent_task.errors.0 }}</small>
+						{% else %}
+							<small class="form-text text-muted">To add subtasks to a different task, go to the task list and select the task.</small>
+						{% endif %}
+					</div>
+					
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">
+							<i class="la la-save"></i> SAVE
+						</button>
+						<a href="{% url 'subtask-list' %}" class="btn btn-secondary ml-2">
+							<i class="la la-times"></i> Cancel
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
