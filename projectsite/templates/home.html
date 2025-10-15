@@ -123,26 +123,10 @@
                                     <br>
                                     <small class="text-muted">{{ task.description|truncatewords:10 }}</small>
                                 </td>
-                                <td>
-                                    {% if task.status == 'Pending' %}
-                                    <span class="badge badge-warning">Pending</span>
-                                    {% elif task.status == 'In Progress' %}
-                                    <span class="badge badge-info">In Progress</span>
-                                    {% else %}
-                                    <span class="badge badge-success">Completed</span>
-                                    {% endif %}
-                                </td>
+                                <td>{{ task.status }}</td>
                                 
                                 <td>{{ task.deadline|date:"M d, Y" }}</td>
-                                <td>
-                                    {% if task.priority.name == 'Critical' or task.priority.name == 'High' %}
-                                    <span class="badge badge-danger">{{ task.priority.name }}</span>
-                                    {% elif task.priority.name == 'Medium' %}
-                                    <span class="badge badge-warning">{{ task.priority.name }}</span>
-                                    {% else %}
-                                    <span class="badge badge-success">{{ task.priority.name }}</span>
-                                    {% endif %}
-                                </td>
+                                <td>{{ task.priority.name }}</td>
                                 <td>{{ task.category.name }}</td>
                                 <td class="text-center">
                                     <a href="{% url 'task-update' task.pk %}" 

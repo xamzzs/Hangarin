@@ -33,8 +33,8 @@
 						<div class="input-group">
 							<input type="text" class="form-control" value="{{ parent_task.title }}" disabled readonly>
 							<div class="input-group-append">
-								<a href="{% url 'task-detail' parent_task.pk %}" class="btn btn-secondary" data-toggle="tooltip" title="View task">
-									<i class="la la-eye"></i>
+								<a href="{% url 'task-update' parent_task.pk %}" class="btn btn-secondary" data-toggle="tooltip" title="Edit task">
+									<i class="la la-pencil"></i>
 								</a>
 							</div>
 						</div>
@@ -45,7 +45,7 @@
 						<button type="submit" class="btn btn-primary">
 							<i class="la la-save"></i> SAVE
 						</button>
-						<a href="{% url 'task-detail' parent_task.pk %}" class="btn btn-secondary ml-2">
+						<a href="{% url 'task-list' %}" class="btn btn-secondary ml-2">
 							<i class="la la-times"></i> Cancel
 						</a>
 					</div>

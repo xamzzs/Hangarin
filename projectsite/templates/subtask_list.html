@@ -18,6 +18,39 @@
                 </div>
             </div>
             <div class="card-body">
+                <!-- Search and Sort -->
+                <form method="get" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input type="text" 
+                                       name="q" 
+                                       class="form-control" 
+                                       placeholder="Search subtasks by title or parent task..." 
+                                       value="{{ request.GET.q }}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="la la-search"></i> Search
+                                    </button>
+                                    {% if request.GET.q %}
+                                    <a href="{% url 'subtask-list' %}" class="btn btn-secondary">
+                                        <i class="la la-times"></i> Clear
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="order_by" class="form-control" onchange="this.form.submit()">
+                                <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
+                                <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Oldest First</option>
+                                <option value="title" {% if order_by == 'title' %}selected{% endif %}>Title (A-Z)</option>
+                                <option value="-title" {% if order_by == '-title' %}selected{% endif %}>Title (Z-A)</option>
+                                <option value="status" {% if order_by == 'status' %}selected{% endif %}>Status</option>
+                            </select>
+                        </div>
+                        </form>
+                
                 {% if subtasks %}
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -35,20 +68,11 @@
                                 <td>
                                     <strong>{{ subtask.title }}</strong>
                                 </td>
+                                <td>{{ subtask.status }}</td>
                                 <td>
-                                    {% if subtask.status == 'Pending' %}
-                                    <span class="badge badge-warning"><i class="la la-clock-o"></i> Pending</span>
-                                    {% elif subtask.status == 'In Progress' %}
-                                    <span class="badge badge-info"><i class="la la-spinner"></i> In Progress</span>
-                                    {% elif subtask.status == 'Completed' %}
-                                    <span class="badge badge-success"><i class="la la-check"></i> Completed</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {{ subtask.parent_task.title }}
+                                    {{ subtask.parent_task.title }}</td>
                                 </td>
                                 <td class="text-center">
-
                                     <a href="{% url 'subtask-update' subtask.pk %}" 
                                        class="text-primary ml-2" 
                                        data-toggle="tooltip" 
@@ -72,16 +96,6 @@
                 {% if is_paginated %}
                 {% include 'includes/pagination.html' %}
                 {% endif %}
-                
-                {% else %}
-                <div class="alert alert-info text-center">
-                    <i class="la la-info-circle la-3x mb-3"></i>
-                    <h5>No SubTasks Found</h5>
-                    <p class="mb-3">Create your first subtask by clicking the "Add SubTask" button above.</p>
-                    <a href="{% url 'subtask-add-with-parent' %}" class="btn btn-primary mt-2">
-                        <i class="la la-plus"></i> Add SubTask
-                    </a>
-                </div>
                 {% endif %}
             </div>
         </div>
