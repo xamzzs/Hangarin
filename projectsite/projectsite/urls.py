@@ -7,6 +7,8 @@ Current User's Login: hizoo5
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from hangarin import views
 
 urlpatterns = [
@@ -47,3 +49,7 @@ urlpatterns = [
     path('notes/<int:pk>/update/', views.NoteUpdateView.as_view(), name='note-update'),
     path('notes/<int:pk>/delete/', views.NoteDeleteView.as_view(), name='note-delete'),
 ]
+
+# Serve static files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
