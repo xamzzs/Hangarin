@@ -5,13 +5,16 @@ Current User's Login: hizoo5
 """
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from .models import Task, Category, Priority, SubTask, Note
-from .forms import TaskForm, SubTaskForm, SubTaskWithParentForm, CategoryForm, PriorityForm, NoteForm
+from .forms import TaskForm, SubTaskForm, SubTaskWithParentForm, CategoryForm, PriorityForm, NoteForm, NoteWithTaskForm
 
 
+@login_required
 def home(request):
     """Dashboard home view"""
     all_tasks = Task.objects.all()
@@ -58,7 +61,7 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-class TaskListView(ListView):
+class TaskListView(LoginRequiredMixin, ListView):
     """Display list of all tasks"""
     model = Task
     template_name = 'task_list.html'
@@ -94,7 +97,7 @@ class TaskListView(ListView):
         context['order_by'] = self.request.GET.get('order_by', '-created_at')
         return context
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     """Create a new task"""
     model = Task
     form_class = TaskForm
@@ -105,7 +108,7 @@ class TaskCreateView(CreateView):
         messages.success(self.request, 'Task created successfully!')
         return super().form_valid(form)
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing task"""
     model = Task
     form_class = TaskForm
@@ -117,7 +120,7 @@ class TaskUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a task"""
     model = Task
     template_name = 'task_del.html'
@@ -130,7 +133,7 @@ class TaskDeleteView(DeleteView):
 
 
 # SubTask Views
-class SubTaskListView(ListView):
+class SubTaskListView(LoginRequiredMixin, ListView):
     """Display list of all subtasks"""
     model = SubTask
     template_name = 'subtask_list.html'
@@ -162,7 +165,7 @@ class SubTaskListView(ListView):
         context['order_by'] = self.request.GET.get('order_by', '-created_at')
         return context
 
-class SubTaskCreateView(CreateView):
+class SubTaskCreateView(LoginRequiredMixin, CreateView):
     """Create a new subtask from task detail page"""
     model = SubTask
     form_class = SubTaskForm
@@ -187,7 +190,7 @@ class SubTaskCreateView(CreateView):
         return super().form_valid(form)
 
 
-class SubTaskCreateWithParentView(CreateView):
+class SubTaskCreateWithParentView(LoginRequiredMixin, CreateView):
     """Create a new subtask with parent task selection"""
     model = SubTask
     form_class = SubTaskWithParentForm
@@ -199,7 +202,7 @@ class SubTaskCreateWithParentView(CreateView):
         return super().form_valid(form)
 
 
-class SubTaskUpdateView(UpdateView):
+class SubTaskUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing subtask"""
     model = SubTask
     form_class = SubTaskForm
@@ -217,7 +220,7 @@ class SubTaskUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class SubTaskDeleteView(DeleteView):
+class SubTaskDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a subtask"""
     model = SubTask
     template_name = 'subtask_del.html'
@@ -234,7 +237,7 @@ class SubTaskDeleteView(DeleteView):
 
 
 # Category Views
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     """Display list of all categories"""
     model = Category
     template_name = 'category_list.html'
@@ -262,7 +265,7 @@ class CategoryListView(ListView):
         context['order_by'] = self.request.GET.get('order_by', 'name')
         return context
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     """Create a new category"""
     model = Category
     form_class = CategoryForm
@@ -274,7 +277,7 @@ class CategoryCreateView(CreateView):
         return super().form_valid(form)
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing category"""
     model = Category
     form_class = CategoryForm
@@ -286,7 +289,7 @@ class CategoryUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a category"""
     model = Category
     template_name = 'category_del.html'
@@ -298,7 +301,7 @@ class CategoryDeleteView(DeleteView):
 
 
 # Note Views
-class NoteListView(ListView):
+class NoteListView(LoginRequiredMixin, ListView):
     """Display list of all notes"""
     model = Note
     template_name = 'note_list.html'
@@ -332,7 +335,7 @@ class NoteListView(ListView):
         return context
 
 
-class NoteCreateView(CreateView):
+class NoteCreateView(LoginRequiredMixin, CreateView):
     """Create a new note"""
     model = Note
     form_class = NoteForm
@@ -355,7 +358,19 @@ class NoteCreateView(CreateView):
         return super().form_valid(form)
 
 
-class NoteUpdateView(UpdateView):
+class NoteCreateWithTaskView(LoginRequiredMixin, CreateView):
+    """Create a new note with task selection"""
+    model = Note
+    form_class = NoteWithTaskForm
+    template_name = 'note_form_with_task.html'
+    success_url = reverse_lazy('note-list')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Note created successfully!')
+        return super().form_valid(form)
+
+
+class NoteUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing note"""
     model = Note
     form_class = NoteForm
@@ -373,7 +388,7 @@ class NoteUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class NoteDeleteView(DeleteView):
+class NoteDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a note"""
     model = Note
     template_name = 'note_del.html'
@@ -390,7 +405,7 @@ class NoteDeleteView(DeleteView):
 
 
 # Priority Views
-class PriorityListView(ListView):
+class PriorityListView(LoginRequiredMixin, ListView):
     """Display list of all priorities"""
     model = Priority
     template_name = 'priority_list.html'
@@ -418,7 +433,7 @@ class PriorityListView(ListView):
         context['order_by'] = self.request.GET.get('order_by', 'name')
         return context
 
-class PriorityCreateView(CreateView):
+class PriorityCreateView(LoginRequiredMixin, CreateView):
     """Create a new priority"""
     model = Priority
     form_class = PriorityForm
@@ -430,7 +445,7 @@ class PriorityCreateView(CreateView):
         return super().form_valid(form)
 
 
-class PriorityUpdateView(UpdateView):
+class PriorityUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing priority"""
     model = Priority
     form_class = PriorityForm
@@ -442,7 +457,7 @@ class PriorityUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class PriorityDeleteView(DeleteView):
+class PriorityDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a priority"""
     model = Priority
     template_name = 'priority_del.html'

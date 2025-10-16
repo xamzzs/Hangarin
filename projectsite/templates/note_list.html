@@ -11,82 +11,90 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="card-title">All Notes</h4>
+                    <h4 class="card-title mb-0"><i class="bi bi-sticky-fill"></i> All Notes</h4>
+                    <a href="{% url 'note-add-with-task' %}" class="btn btn-round" style="background-color: #34C759; color: white; border: none;">
+                        <i class="bi bi-plus-circle"></i> Add Note
+                    </a>
                 </div>
             </div>
             <div class="card-body">
-                <!-- Search and Sort -->
+                <!-- Search and Filter Section -->
                 <form method="get" class="mb-4">
-                    <div class="row">
+                    <div class="row g-3 align-items-center">
+                        <!-- Search Box -->
                         <div class="col-md-8">
                             <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
                                 <input type="text" 
                                        name="q" 
-                                       class="form-control" 
-                                       placeholder="Search notes by content or task..." 
+                                       class="form-control border-start-0 border-end-0 ps-0" 
+                                       placeholder="Search notes..." 
                                        value="{{ request.GET.q }}">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="la la-search"></i> Search
-                                    </button>
-                                    {% if request.GET.q %}
-                                    <a href="{% url 'note-list' %}" class="btn btn-secondary">
-                                        <i class="la la-times"></i> Clear
-                                    </a>
-                                    {% endif %}
-                                </div>
+                                <button class="btn" type="submit" style="background-color: #34C759; color: white; border: none;">
+                                    <i class="bi bi-search"></i> Search
+                                </button>
+                                {% if request.GET.q %}
+                                <a href="{% url 'note-list' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle"></i> Clear
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
+                        <!-- Sort Dropdown -->
                         <div class="col-md-4">
-                            <select name="order_by" class="form-control" onchange="this.form.submit()">
-                                <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
-                                <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Oldest First</option>
-                                <option value="task__title" {% if order_by == 'task__title' %}selected{% endif %}>Task Name (A-Z)</option>
-                                <option value="-task__title" {% if order_by == '-task__title' %}selected{% endif %}>Task Name (Z-A)</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-funnel text-muted"></i>
+                                </span>
+                                <select name="order_by" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
+                                    <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
+                                    <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Oldest First</option>
+                                    <option value="task__title" {% if order_by == 'task__title' %}selected{% endif %}>Task Name (A-Z)</option>
+                                    <option value="-task__title" {% if order_by == '-task__title' %}selected{% endif %}>Task Name (Z-A)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
                 
                 {% if notes %}
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
-                                <th><i class="la la-tasks"></i> Task</th>
-                                <th><i class="la la-file-text-o"></i> Content</th>
-                                
-                                <th><i class="la la-calendar"></i> Created</th>
-                                <th class="text-center"><i class="la la-cog"></i> Actions</th>
+                                <th style="width: 200px;"><i class="bi bi-list-task"></i> Task</th>
+                                <th><i class="bi bi-file-text"></i> Content</th>
+                                <th style="width: 150px;"><i class="bi bi-calendar"></i> Created</th>
+                                <th class="text-center" style="width: 120px;"><i class="bi bi-gear"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for note in notes %}
                             <tr>
-                                <td>
-                                    {{ note.task.title }}
-                                </td>
-                                <td>
-                                    {{ note.content|truncatewords:15 }}
-                                </td>
+                                <td>{{ note.task.title }}</td>
+                                <td>{{ note.content|truncatewords:15 }}</td>
                                 <td>
                                     <small class="text-muted">
-                                        <i class="la la-calendar"></i> {{ note.created_at|date:"M d, Y H:i" }}
+                                        <i class="bi bi-calendar"></i> {{ note.created_at|date:"M d, Y H:i" }}
                                     </small>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{% url 'note-update' note.pk %}" 
-                                       class="text-primary ml-2" 
-                                       data-toggle="tooltip" 
-                                       title="Edit Note">
-                                        Edit
-                                    </a>
-                                    <a href="{% url 'note-delete' note.pk %}" 
-                                       class="text-danger ml-2" 
-                                       data-toggle="tooltip" 
-                                       title="Delete Note">
-                                        Delete
-                                    </a>
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'note-update' note.pk %}" 
+                                           class="btn btn-sm btn-primary" 
+                                           data-toggle="tooltip" 
+                                           title="Edit Note">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="{% url 'note-delete' note.pk %}" 
+                                           class="btn btn-sm btn-danger" 
+                                           data-toggle="tooltip" 
+                                           title="Delete Note">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}

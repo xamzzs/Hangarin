@@ -63,3 +63,13 @@ class NoteForm(ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }
+
+
+class NoteWithTaskForm(ModelForm):
+    class Meta:
+        model = Note
+        fields = ['task', 'content']
+        widgets = {
+            'task': forms.Select(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }

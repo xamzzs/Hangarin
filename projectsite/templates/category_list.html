@@ -11,74 +11,82 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="card-title">All Categories</h4>
-                    <a href="{% url 'category-add' %}" class="btn btn-primary btn-round">
-                        <i class="la la-plus"></i> Add Category
+                    <h4 class="card-title mb-0"><i class="bi bi-folder-fill"></i> All Categories</h4>
+                    <a href="{% url 'category-add' %}" class="btn btn-round" style="background-color: #34C759; color: white; border: none;">
+                        <i class="bi bi-plus-circle"></i> Add Category
                     </a>
                 </div>
             </div>
             <div class="card-body">
-                <!-- Search and Sort -->
+                <!-- Search and Filter Section -->
                 <form method="get" class="mb-4">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="input-group">
-                                        <input type="text" 
-                                               name="q" 
-                                               class="form-control" 
-                                               placeholder="Search categories..." 
-                                               value="{{ request.GET.q }}">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit">
-                                                <i class="la la-search"></i> Search
-                                            </button>
-                                            {% if request.GET.q %}
-                                            <a href="{% url 'category-list' %}" class="btn btn-secondary">
-                                                <i class="la la-times"></i> Clear
-                                            </a>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <select name="order_by" class="form-control" onchange="this.form.submit()">
-                                        <option value="name" {% if order_by == 'name' %}selected{% endif %}>Name (A-Z)</option>
-                                        <option value="-name" {% if order_by == '-name' %}selected{% endif %}>Name (Z-A)</option>
-                                        <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
-                                        <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Oldest First</option>
-                                    </select>
-                                </div>
+                    <div class="row g-3 align-items-center">
+                        <!-- Search Box -->
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                <input type="text" 
+                                       name="q" 
+                                       class="form-control border-start-0 border-end-0 ps-0" 
+                                       placeholder="Search categories..." 
+                                       value="{{ request.GET.q }}">
+                                <button class="btn" type="submit" style="background-color: #34C759; color: white; border: none;">
+                                    <i class="bi bi-search"></i> Search
+                                </button>
+                                {% if request.GET.q %}
+                                <a href="{% url 'category-list' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle"></i> Clear
+                                </a>
+                                {% endif %}
                             </div>
-                        </form>
+                        </div>
+                        <!-- Sort Dropdown -->
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-funnel text-muted"></i>
+                                </span>
+                                <select name="order_by" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
+                                    <option value="name" {% if order_by == 'name' %}selected{% endif %}>Name (A-Z)</option>
+                                    <option value="-name" {% if order_by == '-name' %}selected{% endif %}>Name (Z-A)</option>
+                                    <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
+                                    <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 
                 {% if categories_list %}
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                            <thead>
+                    <table class="table table-hover align-middle">
+                            <thead class="table-light">
                                 <tr>
-                                    <th><i class="la la-keyboard-o"></i> Name</th>
-                                    <th class="text-center"><i class="la la-cog"></i> Actions</th>
+                                    <th><i class="bi bi-tag"></i> Name</th>
+                                    <th class="text-center" style="width: 120px;"><i class="bi bi-gear"></i> Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for category in categories_list %}
                                 <tr>
-                                    <td>
-                                        <strong>{{ category.name }}</strong>
-                                    </td>
+                                    <td><strong>{{ category.name }}</strong></td>
                                     <td class="text-center">
-                                        <a href="{% url 'category-update' category.pk %}" 
-                                           class="text-primary" 
-                                           data-toggle="tooltip" 
-                                           title="Edit Category">
-                                            Edit
-                                        </a>
-                                        <a href="{% url 'category-delete' category.pk %}" 
-                                           class="text-danger ml-2" 
-                                           data-toggle="tooltip" 
-                                           title="Delete Category">
-                                            Delete
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'category-update' category.pk %}" 
+                                               class="btn btn-sm btn-primary" 
+                                               data-toggle="tooltip" 
+                                               title="Edit Category">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="{% url 'category-delete' category.pk %}" 
+                                               class="btn btn-sm btn-danger" 
+                                               data-toggle="tooltip" 
+                                               title="Delete Category">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}

@@ -1,4 +1,5 @@
 {% load static %}
+{% load pwa %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +18,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 	
 	{% block extra_css %}{% endblock %}
+	{% progressive_web_app_meta %}
 </head>
 <body>
 	<div class="wrapper">
@@ -28,7 +30,7 @@
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+				<button class="topbar-toggler more"><i class="bi bi-three-dots-vertical"></i></button>
 			</div>
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
@@ -37,7 +39,7 @@
 							<input type="text" placeholder="Search ..." class="form-control" id="searchInput">
 							<div class="input-group-append">
 								<span class="input-group-text">
-									<i class="la la-search search-icon"></i>
+									<i class="bi bi-search search-icon"></i>
 								</span>
 							</div>
 						</div>
@@ -45,7 +47,7 @@
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						<li class="nav-item dropdown hidden-caret">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="la la-envelope"></i>
+								<i class="bi bi-envelope"></i>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="#">No new messages</a>
@@ -53,7 +55,7 @@
 						</li>
 						<li class="nav-item dropdown hidden-caret">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="la la-bell"></i>
+								<i class="bi bi-bell"></i>
 								<span class="notification">{{ pending_tasks|default:"0" }}</span>
 							</a>
 							<ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
@@ -63,7 +65,7 @@
 								<li>
 									<div class="notif-center">
 										<a href="{% url 'task-list' %}">
-											<div class="notif-icon notif-warning"> <i class="la la-clock"></i> </div>
+											<div class="notif-icon notif-warning"> <i class="bi bi-clock"></i> </div>
 											<div class="notif-content">
 												<span class="block">{{ pending_tasks|default:"0" }} tasks pending</span>
 												<span class="time">Check dashboard</span>
@@ -72,7 +74,7 @@
 									</div>
 								</li>
 								<li>
-									<a class="see-all" href="{% url 'task-list' %}"> <strong>See all tasks</strong> <i class="la la-angle-right"></i> </a>
+									<a class="see-all" href="{% url 'task-list' %}"> <strong>See all tasks</strong> <i class="bi bi-chevron-right"></i> </a>
 								</li>
 							</ul>
 						</li>
@@ -136,38 +138,38 @@
 				<ul class="nav">
 					<li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
 						<a href="{% url 'home' %}">
-							<i class="la la-dashboard"></i>
+							<i class="bi bi-speedometer2"></i>
 							<p>Dashboard</p>
 							<span class="badge badge-count">{{ total_tasks|default:"0" }}</span>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'task-list' %}active{% endif %}">
 						<a href="{% url 'task-list' %}">
-							<i class="la la-table"></i>
+							<i class="bi bi-grid-3x3-gap"></i>
 							<p>Tasks</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'subtask-list' %}active{% endif %}">
 						<a href="{% url 'subtask-list' %}">
-							<i class="la la-check-square-o"></i>
+							<i class="bi bi-check-square"></i>
 							<p>SubTasks</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'category-list' %}active{% endif %}">
 						<a href="{% url 'category-list' %}">
-							<i class="la la-keyboard-o"></i>
+							<i class="bi bi-keyboard"></i>
 							<p>Categories</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'priority-list' %}active{% endif %}">
 						<a href="{% url 'priority-list' %}">
-							<i class="la la-th"></i>
+							<i class="bi bi-grid"></i>
 							<p>Priorities</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'note-list' %}active{% endif %}">
 						<a href="{% url 'note-list' %}">
-							<i class="la la-sticky-note"></i>
+							<i class="bi bi-sticky"></i>
 							<p>Notes</p>
 						</a>
 					</li>
@@ -188,7 +190,7 @@
 					{% if messages %}
 					{% for message in messages %}
 					<div class="alert alert-{{ message.tags }} alert-modern alert-dismissible fade show" role="alert">
-						<i class="la la-check-circle"></i>
+						<i class="bi bi-check-circle-fill"></i>
 						{{ message }}
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -212,7 +214,7 @@
 						</ul>
 					</nav>
 					<div class="copyright ml-auto">
-						2025, made with <i class="la la-heart heart text-danger"></i> by <a href="#">{{ request.user.username }}</a>
+						2025, made with <i class="bi bi-heart-fill heart text-danger"></i> by <a href="#">{{ request.user.username }}</a>
 					</div>
 				</div>
 			</footer>

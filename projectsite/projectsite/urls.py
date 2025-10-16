@@ -11,6 +11,7 @@ from hangarin import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('pwa.urls')),
     path("accounts/", include("allauth.urls")), # allauth routes
     path('', views.home, name='home'),
     
@@ -41,6 +42,7 @@ urlpatterns = [
     
     # Note URLs
     path('notes/', views.NoteListView.as_view(), name='note-list'),
+    path('notes/add/', views.NoteCreateWithTaskView.as_view(), name='note-add-with-task'),
     path('tasks/<int:task_pk>/notes/add/', views.NoteCreateView.as_view(), name='note-add'),
     path('notes/<int:pk>/update/', views.NoteUpdateView.as_view(), name='note-update'),
     path('notes/<int:pk>/delete/', views.NoteDeleteView.as_view(), name='note-delete'),
