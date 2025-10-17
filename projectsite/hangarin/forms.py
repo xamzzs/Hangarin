@@ -13,8 +13,21 @@ class TaskForm(ModelForm):
             'category': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'deadline': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            'deadline': forms.DateTimeInput(
+                format='%Y-%m-%dT%H:%M:%S',
+                attrs={
+                    'class': 'form-control',
+                    'type': 'datetime-local',
+                    'step': '1'  # allow seconds precision; prevents browser from rejecting nearby values
+                }
+            ),
         }
+
+    # Accept datetime-local values including seconds
+    deadline = forms.DateTimeField(
+        widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M:%S', attrs={'type': 'datetime-local', 'class': 'form-control', 'step': '1'}),
+        input_formats=['%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M']
+    )
 
 
 class SubTaskForm(ModelForm):
