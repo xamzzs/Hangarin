@@ -2037,7 +2037,7 @@ body {
 }
 
 .main-header {
-  min-height: 55px;
+  min-height: 20px;
   width: 100%;
   background: #ffffff;
   position: fixed;
@@ -2047,8 +2047,8 @@ body {
 .main-header .logo-header {
   float: left;
   width: 260px;
-  height: 55px;
-  line-height: 55px;
+  height: 50px;
+  line-height: 40px;
   border-right: 1px solid #eee;
   color: #333333;
   z-index: 1001;
@@ -5085,7 +5085,7 @@ body {
 }
 .card .card-title {
   margin: 0;
-  color: #575962;
+  color: #040404;
   font-size: 18px;
   font-weight: 600;
   line-height: 1.6;
@@ -5693,13 +5693,13 @@ body {
 
 .navbar .navbar-nav .notification {
   position: absolute;
-  background-color: #ff646d;
+  background-color: #FFE699;
   text-align: center;
   border-radius: 10px;
   min-width: 17px;
   height: 17px;
   font-size: 11px;
-  color: #ffffff;
+  color: #1a1a1a;
   font-weight: bold;
   line-height: 17px;
   top: 11px;
@@ -5740,26 +5740,73 @@ body {
 }
 
 /*     Nav Search     */
-.nav-search .input-group {
-  border: 1px solid #eee;
-  background: #eee;
-  border-radius: 50px;
+/* Force header layout: logo (left) | search (left band) | icons/profile (right) */
+
+/* Ensure the nav container uses normal flex flow and separates search + icons */
+.main-header nav.navbar .container-fluid {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important; /* search left, icons right */
+  padding-left: 0 !important;
+  padding-right: 16px !important;
+  gap: 12px;
 }
-.nav-search .input-group:hover, .nav-search .input-group:focus {
-  border: 1px solid #ddd;
+
+/* Make search occupy a left band (after logo) but not expand to cover icons */
+.main-header nav.navbar .nav-search {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: 0 1 520px !important;   /* preferred width but can shrink */
+  max-width: 520px !important;
+  min-width: 220px !important;
+  margin: 0 !important;
+  position: relative !important;
+  z-index: 1100 !important;      /* below topbar icons */
 }
-.nav-search .form-control {
-  border: 0;
-  background: transparent;
-  font-size: 14px;
+
+/* Make the inner input fill the search box width */
+.main-header nav.navbar .nav-search .input-group {
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
-.nav-search .input-group-text {
-  border: 0;
-  background: transparent;
+
+/* Keep icon/profile area pinned to the right and above search visually */
+.main-header nav.navbar .topbar-nav {
+  margin-left: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  position: relative !important;
+  z-index: 1200 !important; /* topbar above search */
 }
-.nav-search .search-icon {
-  font-size: 21px;
-  color: #666;
+
+/* Show profile username on desktop explicitly and ensure avatar shows */
+@media (min-width: 992px) {
+  .topbar-nav .profile-pic {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  .topbar-nav .profile-pic img.img-circle {
+    width: 36px !important;
+    height: 36px !important;
+    display: block !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+  .topbar-nav .profile-pic span {
+    display: inline-block !important;
+    color: #cccccc !important;
+    font-weight: 600 !important;
+    margin-left: 4px !important;
+  }
+}
+
+/* Mobile: keep username hidden per original behavior */
+@media (max-width: 991px) {
+  /* .topbar-nav .profile-pic span { display: none !important; }  -- removed to always show username */
+  .main-header nav.navbar .container-fluid { justify-content: flex-start !important; }
+  .main-header nav.navbar .nav-search { width: 100% !important; max-width: none !important; }
 }
 
 /*     Badge    */
@@ -5774,20 +5821,23 @@ body {
 }
 
 .badge-count {
-  border: 1px solid #ddd;
+  border: 1px solid #8B7FFF;
+  background-color: #8B7FFF;
+  color: #ffffff;
 }
 
 .badge-default {
-  background: #607D8B;
+  background: #808080;
   color: #ffffff !important;
 }
 
 .badge-primary {
-  background: #1D62F0;
+  background: #8B7FFF;
 }
 
 .badge-info {
-  background: #23CCEF;
+  background: #FFE699;
+  color: #1a1a1a;
 }
 
 .badge-success {
@@ -6674,105 +6724,150 @@ body {
 /*# sourceMappingURL=ready.css.map */
 
 /* ========================================
-   HANGARIN - CLEAN MODERN UI DESIGN
-   Based on Task Management Dashboard Template
+   HANGARIN - PURPLE & YELLOW THEME
+   Based on Hangarin Logo Colors
    ======================================== */
 
 /* === GLOBAL STYLES === */
 body {
-    background-color: #f0f2f5 !important;
+    background-color: #f5f5f7 !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
 }
 
 .wrapper {
-    background-color: #f0f2f5 !important;
+    background-color: #f5f5f7 !important;
 }
 
 .main-panel,
 .main-panel > .content {
-    background-color: #f0f2f5 !important;
+    background-color: #f5f5f7 !important;
 }
 
 /* === HEADER & NAVIGATION === */
 .main-header {
-    background-color: #ffffff !important;
-    border-bottom: 1px solid #e3e6ea !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #333333 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
 }
 
 .main-header .logo-header {
-    background-color: #ffffff !important;
-    border-right: 1px solid #e3e6ea !important;
+    background-color: #1a1a1a !important;
+    border-right: 1px solid #333333 !important;
 }
 
 .main-header .logo-header a.logo {
-    color: #2c3e50 !important;
+    color: #FFE699 !important;
     font-weight: 700 !important;
 }
 
-.main-header .logo-header a.logo i {
-    color: #4a90e2 !important;
+
+/* Use a single-row flex header so logo, search and topbar align horizontally */
+.main-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: stretch !important;
 }
 
+.main-header .logo-header {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 18px !important;
+}
+
+.main-header nav.navbar {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 56px !important;
+}
+
+.main-header nav.navbar .container-fluid {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.main-header nav.navbar .nav-search {
+  flex: 0 1 520px !important;
+  margin-right: 12px !important;
+}
+
+.main-header nav.navbar .topbar-nav {
+  margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
 .navbar-header {
-    background-color: #ffffff !important;
+    background-color: #1a1a1a !important;
 }
 
 .nav-search .form-control {
-    background-color: #f8f9fa !important;
-    border: 1px solid #e3e6ea !important;
+    background-color: #2a2a2a !important;
+    border: 1px solid #404040 !important;
     border-radius: 8px !important;
-    color: #2c3e50 !important;
+    color: #ffffff !important;
 }
 
 .nav-search .form-control::placeholder {
-    color: #95a5a6 !important;
+    color: #808080 !important;
 }
 
 .topbar-nav .nav-link {
-    color: #6c757d !important;
+    color: #cccccc !important;
 }
 
 .topbar-nav .nav-link:hover {
-    color: #2c3e50 !important;
+    color: #FFE699 !important;
+}
+
+.topbar-nav .nav-link i {
+    color: #cccccc !important;
+}
+
+.topbar-nav .nav-link:hover i {
+    color: #FFE699 !important;
 }
 
 /* === SIDEBAR === */
 .sidebar {
     background-color: #ffffff !important;
-    border-right: 1px solid #e3e6ea !important;
-    box-shadow: none !important;
+    border-right: 1px solid #e0e0e0 !important;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.05) !important;
 }
 
 .sidebar .nav > li > a {
-    color: #6c757d !important;
+    color: #4a4a4a !important;
     padding: 12px 20px !important;
     border-radius: 0 !important;
     transition: all 0.2s ease !important;
 }
 
 .sidebar .nav > li > a i {
-    color: #95a5a6 !important;
+    color: #808080 !important;
 }
 
 .sidebar .nav > li:hover > a {
-    background-color: #f8f9fa !important;
-    color: #2c3e50 !important;
+    background-color: #f9f5ff !important;
+    color: #1a1a1a !important;
 }
 
 .sidebar .nav > li:hover > a i {
-    color: #4a90e2 !important;
+    color: #8B7FFF !important;
 }
 
 .sidebar .nav > li.active > a {
-    background-color: #e3f2fd !important;
-    color: #4a90e2 !important;
-    border-left: 3px solid #4a90e2 !important;
+    background-color: #8B7FFF !important;
+    color: #ffffff !important;
+    border-left: 4px solid #FFE699 !important;
 }
 
 .sidebar .nav > li.active > a i {
-    color: #4a90e2 !important;
+    color: #ffffff !important;
 }
 
 /* === PAGE TITLE === */
@@ -6785,7 +6880,7 @@ body {
 
 .page-title,
 h4.page-title {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 24px !important;
     font-weight: 700 !important;
     margin: 0 !important;
@@ -6796,19 +6891,19 @@ h4.page-title {
     background-color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.06) !important;
+    box-shadow: 0 2px 8px rgba(139,127,255,0.1) !important;
     margin-bottom: 24px !important;
 }
 
 .card-header {
     background-color: #ffffff !important;
-    border-bottom: 1px solid #f0f2f5 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
     padding: 20px 24px !important;
     border-radius: 12px 12px 0 0 !important;
 }
 
 .card-title {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 18px !important;
     font-weight: 600 !important;
     margin: 0 !important;
@@ -6844,82 +6939,82 @@ h4.page-title {
     font-size: 28px !important;
 }
 
-/* Orange - Total Tasks */
+/* Purple - Total Tasks */
 .card-stats.card-warning .icon-big {
-    background-color: #fff4e6 !important;
+    background-color: #f3f1ff !important;
 }
 
 .card-stats.card-warning .icon-big i {
-    color: #ff9800 !important;
+    color: #8B7FFF !important;
 }
 
 .card-stats.card-warning .card-category {
-    color: #95a5a6 !important;
+    color: #808080 !important;
     font-size: 13px !important;
 }
 
 .card-stats.card-warning .card-title {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 28px !important;
     font-weight: 700 !important;
 }
 
-/* Green - Pending */
+/* Yellow - Pending */
 .card-stats.card-success .icon-big {
-    background-color: #e8f5e9 !important;
+    background-color: #fffbef !important;
 }
 
 .card-stats.card-success .icon-big i {
-    color: #4caf50 !important;
+    color: #FFD966 !important;
 }
 
 .card-stats.card-success .card-category {
-    color: #95a5a6 !important;
+    color: #808080 !important;
     font-size: 13px !important;
 }
 
 .card-stats.card-success .card-title {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 28px !important;
     font-weight: 700 !important;
 }
 
-/* Red - In Progress */
+/* Purple Dark - In Progress */
 .card-stats.card-danger .icon-big {
-    background-color: #ffebee !important;
+    background-color: #e8e6f7 !important;
 }
 
 .card-stats.card-danger .icon-big i {
-    color: #f44336 !important;
+    color: #6B5FCC !important;
 }
 
 .card-stats.card-danger .card-category {
-    color: #95a5a6 !important;
+    color: #808080 !important;
     font-size: 13px !important;
 }
 
 .card-stats.card-danger .card-title {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 28px !important;
     font-weight: 700 !important;
 }
 
-/* Blue - Completed */
+/* Black/Purple - Completed */
 .card-stats.card-primary .icon-big {
-    background-color: #e3f2fd !important;
+    background-color: #2a2a2a !important;
 }
 
 .card-stats.card-primary .icon-big i {
-    color: #2196f3 !important;
+    color: #FFE699 !important;
 }
 
 .card-stats.card-primary .card-category {
-    color: #95a5a6 !important;
+    color: #808080 !important;
     font-size: 13px !important;
 }
 
 .card-stats.card-primary .card-title {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 28px !important;
     font-weight: 700 !important;
 }
@@ -6941,24 +7036,25 @@ h4.page-title {
 
 .table thead th {
     background-color: transparent !important;
-    color: #95a5a6 !important;
-    font-weight: 600 !important;
+    color: #808080 !important;
+    font-weight: 700 !important;
     font-size: 12px !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: 0.8px !important;
     padding: 12px 16px !important;
     border-top: none !important;
-    border-bottom: 2px solid #f0f2f5 !important;
+    border-bottom: 2px solid #8B7FFF !important;
 }
 
 .table tbody tr {
     background-color: transparent !important;
-    border-bottom: 1px solid #f0f2f5 !important;
-    transition: background-color 0.2s ease !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    transition: all 0.2s ease !important;
 }
 
 .table tbody tr:hover {
-    background-color: #f8f9fa !important;
+    background-color: #f9f5ff !important;
+    border-left: 3px solid #8B7FFF !important;
 }
 
 .table tbody tr:last-child {
@@ -6968,13 +7064,13 @@ h4.page-title {
 .table td {
     padding: 16px !important;
     vertical-align: middle !important;
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     border: none !important;
 }
 
 .table td:first-child {
     font-weight: 600 !important;
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
 }
 
 /* Task title styling */
@@ -7003,37 +7099,37 @@ h4.page-title {
 .badge.bg-info,
 .badge[style*="background-color: #d1ecf1"],
 table td:nth-child(4) .badge {
-    background-color: #d1ecf1 !important;
-    color: #0c5460 !important;
+    background-color: #f3f1ff !important;
+    color: #8B7FFF !important;
 }
 
 .badge.bg-danger,
 .badge[style*="background-color: #f8d7da"] {
-    background-color: #f8d7da !important;
-    color: #721c24 !important;
+    background-color: #2a2a2a !important;
+    color: #FFE699 !important;
 }
 
 .badge.bg-warning {
-    background-color: #fff3cd !important;
-    color: #856404 !important;
+    background-color: #fffbef !important;
+    color: #d4a800 !important;
 }
 
 /* Status Badges */
 .badge.bg-primary,
 table td:nth-child(5) .badge {
-    background-color: #d1ecf1 !important;
-    color: #0c5460 !important;
+    background-color: #e8e6f7 !important;
+    color: #6B5FCC !important;
 }
 
 .badge[style*="background-color: #fff3cd"] {
-    background-color: #fff3cd !important;
-    color: #856404 !important;
+    background-color: #fffbef !important;
+    color: #d4a800 !important;
 }
 
 .badge.bg-success,
 .badge[style*="background-color: #d4edda"] {
-    background-color: #d4edda !important;
-    color: #155724 !important;
+    background-color: #8B7FFF !important;
+    color: #ffffff !important;
 }
 
 /* === BUTTONS - CLEAN STYLE === */
@@ -7051,9 +7147,9 @@ button[style*="background-color: #34C759"],
 button[style*="background-color: #2dd4bf"],
 a[style*="background-color: #34C759"],
 a[style*="background-color: #2dd4bf"] {
-    background-color: #4a90e2 !important;
+    background-color: #8B7FFF !important;
     color: #ffffff !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 8px rgba(139,127,255,0.3) !important;
 }
 
 .btn-primary:hover,
@@ -7061,10 +7157,10 @@ button[style*="background-color: #34C759"]:hover,
 button[style*="background-color: #2dd4bf"]:hover,
 a[style*="background-color: #34C759"]:hover,
 a[style*="background-color: #2dd4bf"]:hover {
-    background-color: #357abd !important;
+    background-color: #7a6fef !important;
     color: #ffffff !important;
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(139,127,255,0.4) !important;
 }
 
 /* Fix for buttons with inline styles */
@@ -7079,48 +7175,50 @@ a[style*="background-color"] i {
 }
 
 .btn-success {
-    background-color: #5cb85c !important;
+    background-color: #8B7FFF !important;
     color: #ffffff !important;
 }
 
 .btn-success:hover {
-    background-color: #4cae4c !important;
+    background-color: #7a6fef !important;
 }
 
 .btn-danger {
-    background-color: #d9534f !important;
-    color: #ffffff !important;
+    background-color: #1a1a1a !important;
+    color: #FFE699 !important;
 }
 
 .btn-danger:hover {
-    background-color: #c9302c !important;
+    background-color: #2a2a2a !important;
+    color: #FFE699 !important;
 }
 
 .btn-warning {
-    background-color: #f0ad4e !important;
-    color: #ffffff !important;
+    background-color: #FFE699 !important;
+    color: #1a1a1a !important;
 }
 
 .btn-outline-primary {
     background-color: transparent !important;
-    color: #4a90e2 !important;
-    border: 2px solid #4a90e2 !important;
+    color: #8B7FFF !important;
+    border: 2px solid #8B7FFF !important;
 }
 
 .btn-outline-primary:hover {
-    background-color: #4a90e2 !important;
+    background-color: #8B7FFF !important;
     color: #ffffff !important;
 }
 
 .btn-outline-secondary {
     background-color: transparent !important;
-    color: #6c757d !important;
-    border: 2px solid #dee2e6 !important;
+    color: #4a4a4a !important;
+    border: 2px solid #e0e0e0 !important;
 }
 
 .btn-outline-secondary:hover {
-    background-color: #f8f9fa !important;
-    color: #495057 !important;
+    background-color: #f9f5ff !important;
+    color: #1a1a1a !important;
+    border-color: #8B7FFF !important;
 }
 
 /* Icon Buttons - Action Column */
@@ -7177,7 +7275,7 @@ a[style*="background-color"] i {
 
 /* === FORMS - CLEAN STYLE === */
 .form-label {
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-weight: 600 !important;
     font-size: 14px !important;
     margin-bottom: 8px !important;
@@ -7187,10 +7285,10 @@ a[style*="background-color"] i {
 .form-select,
 textarea.form-control {
     background-color: #ffffff !important;
-    border: 1px solid #e3e6ea !important;
+    border: 2px solid #e0e0e0 !important;
     border-radius: 8px !important;
     padding: 12px 16px !important;
-    color: #2c3e50 !important;
+    color: #1a1a1a !important;
     font-size: 14px !important;
     transition: all 0.2s ease !important;
 }
@@ -7199,12 +7297,12 @@ textarea.form-control {
 .form-select:focus,
 textarea.form-control:focus {
     background-color: #ffffff !important;
-    border-color: #4a90e2 !important;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1) !important;
+    border-color: #8B7FFF !important;
+    box-shadow: 0 0 0 3px rgba(139, 127, 255, 0.15) !important;
 }
 
 .form-control::placeholder {
-    color: #95a5a6 !important;
+    color: #999999 !important;
 }
 
 textarea.form-control {

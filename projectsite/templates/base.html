@@ -16,36 +16,76 @@
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-	    <link rel="stylesheet" href="{% static 'css/ready.css' %}?v=5.0">
+	<link rel="stylesheet" href="{% static 'css/ready.css' %}?v=9.0">
 	<link rel="stylesheet" href="{% static 'css/demo.css' %}">
 	
 	<!-- Bootstrap Icons -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 	
+	<style>
+		html, body, div#root, .wrapper, .main-panel, .content, .container-fluid {
+			background: #f3f1ff !important;
+		}
+		
+		html, body {
+			min-height: 100vh !important;
+		}
+
+		.wrapper, .wrapper > *, .main-panel, .main-panel > *, .content, .content > *, .container-fluid {
+			background-color: transparent !important;
+			background-image: none !important;
+		}
+		
+		#searchInput {
+			color: #ffffff !important;
+			-webkit-text-fill-color: #ffffff !important;
+		}
+		
+		#searchInput::placeholder {
+			color: #999999 !important;
+			opacity: 1 !important;
+		}
+		
+		/* KEEP CARDS WHITE */
+		.card {
+			background: #ffffff !important;
+		}
+		
+		/* KEEP SIDEBAR WHITE */
+		.sidebar {
+			background: #ffffff !important;
+		}
+		
+		/* KEEP HEADER BLACK */
+		.main-header {
+			background: #1a1a1a !important;
+		}
+	</style>
+	
 	{% block extra_css %}{% endblock %}
 	{% progressive_web_app_meta %}
 </head>
-<body>
-	<div class="wrapper">
+<body style="background: #f3f1ff !important;">
+	<div class="wrapper" style="background: transparent !important;">
 		<div class="main-header">
 			<div class="logo-header">
 				<a href="{% url 'home' %}" class="logo" style="display: flex; align-items: center; gap: 8px;">
 					<img src="{% static 'img/Hangarin_logo.png' %}" alt="Logo" style="height: 32px; width: auto; object-fit: contain;">
-					<span style="font-weight: 600; font-size: 18px; color: #2c3e50;">HANGARIN</span>
+					<span style="font-weight: 700; font-size: 18px; color: #FFE699;">HANGARIN</span>
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<button class="topbar-toggler more"><i class="bi bi-three-dots-vertical"></i></button>
+				
 			</div>
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
 					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
-						<div class="input-group">
-							<input type="text" placeholder="Search ..." class="form-control" id="searchInput">
+						<div class="input-group" style="background-color: #2a2a2a !important; border: 1px solid #404040 !important; border-radius: 8px !important;">
+							<input type="text" placeholder="Search ..." class="form-control" id="searchInput" style="background-color: #2a2a2a !important; color: #ffffff !important; border: none !important;">
 							<div class="input-group-append">
-								<span class="input-group-text">
-									<i class="bi bi-search search-icon"></i>
+								<span class="input-group-text" style="background-color: #2a2a2a !important; border: none !important;">
+									<i class="bi bi-search search-icon" style="color: #cccccc !important;"></i>
 								</span>
 							</div>
 						</div>
@@ -144,38 +184,38 @@
 				<ul class="nav">
 					<li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
 						<a href="{% url 'home' %}">
-							<i class="bi bi-speedometer2"></i>
+							<i class="bi bi-house-door-fill"></i>
 							<p>Dashboard</p>
 							<span class="badge badge-count">{{ total_tasks|default:"0" }}</span>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'task-list' %}active{% endif %}">
 						<a href="{% url 'task-list' %}">
-							<i class="bi bi-grid-3x3-gap"></i>
+							<i class="bi bi-list-task"></i>
 							<p>Tasks</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'subtask-list' %}active{% endif %}">
 						<a href="{% url 'subtask-list' %}">
-							<i class="bi bi-check-square"></i>
+							<i class="bi bi-check2-square"></i>
 							<p>SubTasks</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'category-list' %}active{% endif %}">
 						<a href="{% url 'category-list' %}">
-							<i class="bi bi-keyboard"></i>
+							<i class="bi bi-collection-fill"></i>
 							<p>Categories</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'priority-list' %}active{% endif %}">
 						<a href="{% url 'priority-list' %}">
-							<i class="bi bi-grid"></i>
+							<i class="bi bi-flag-fill"></i>
 							<p>Priorities</p>
 						</a>
 					</li>
 					<li class="nav-item {% if request.resolver_match.url_name == 'note-list' %}active{% endif %}">
 						<a href="{% url 'note-list' %}">
-							<i class="bi bi-sticky"></i>
+							<i class="bi bi-journal-text"></i>
 							<p>Notes</p>
 						</a>
 					</li>
@@ -184,9 +224,9 @@
 		</div>
 
 		<!-- Main Panel -->
-		<div class="main-panel">
-			<div class="content">
-				<div class="container-fluid">
+		<div class="main-panel" style="background: transparent !important;">
+			<div class="content" style="background: transparent !important;">
+				<div class="container-fluid" style="background: transparent !important;">
 					<!-- Page Header -->
 					<div class="page-header">
 						<h4 class="page-title">{% block page_title %}Dashboard{% endblock %}</h4>
@@ -240,6 +280,5 @@
 <script src="{% static 'js/plugin/chart-circle/circles.min.js' %}"></script>
 <script src="{% static 'js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
 <script src="{% static 'js/ready.min.js' %}"></script>
-<script src="{% static 'js/hangarin.js' %}"></script>
 {% block extra_js %}{% endblock %}
 </html>

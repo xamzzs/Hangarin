@@ -151,6 +151,10 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Task updated successfully!')
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Edit Task'
+        return context
 
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
@@ -326,6 +330,11 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Category updated successfully!')
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Edit Category'
+        return context
 
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
@@ -418,7 +427,7 @@ class NoteUpdateView(LoginRequiredMixin, UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Update Note'
+        context['page_title'] = 'Edit Note'
         context['parent_task'] = self.object.task
         return context
     
@@ -494,6 +503,10 @@ class PriorityUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Priority updated successfully!')
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Edit Priority'
+        return context
 
 
 class PriorityDeleteView(LoginRequiredMixin, DeleteView):
