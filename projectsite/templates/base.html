@@ -30,8 +30,8 @@
 		<div class="main-header">
 			<div class="logo-header">
 				<a href="{% url 'home' %}" class="logo" style="display: flex; align-items: center; gap: 8px;">
-					<i class="bi bi-clipboard-check-fill" style="font-size: 24px; color: #34C759;"></i>
-					<span style="font-weight: 600;">HANGARIN</span>
+					<img src="{% static 'img/Hangarin_logo.png' %}" alt="Logo" style="height: 32px; width: auto; object-fit: contain;">
+					<span style="font-weight: 600; font-size: 18px; color: #2c3e50;">HANGARIN</span>
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -130,7 +130,7 @@
 							</span>
 						</a>
 						<div class="clearfix"></div>
-						<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+						<div class="collapse in" id="collapseExample" aria-expanded="true">
 							<ul class="nav">
 								<li><a href="#profile"><span class="link-collapse">My Profile</span></a></li>
 								<li><a href="#edit"><span class="link-collapse">Edit Profile</span></a></li>
