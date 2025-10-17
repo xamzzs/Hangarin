@@ -8,14 +8,15 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	
 	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="{% static 'img/profile.jpg' %}">
-	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/profile.jpg' %}">
+	<link rel="icon" type="image/png" href="{% static 'img/hangarin-icon-192.png' %}">
+	<link rel="shortcut icon" type="image/png" href="{% static 'img/hangarin-icon-192.png' %}">
+	<link rel="apple-touch-icon" href="{% static 'img/hangarin-icon-192.png' %}">
 	
 	<!-- Ready Dashboard CSS -->
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-	<link rel="stylesheet" href="{% static 'css/ready.css' %}">
+	    <link rel="stylesheet" href="{% static 'css/ready.css' %}?v=5.0">
 	<link rel="stylesheet" href="{% static 'css/demo.css' %}">
 	
 	<!-- Bootstrap Icons -->
@@ -85,13 +86,13 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
-								<img src="{% static 'img/profile.jpg' %}" alt="user-img" width="36" class="img-circle">
+								<img src="{% static 'img/profile.png' %}" alt="user-img" width="36" class="img-circle">
 								<span>{{ request.user.username }}</span>
 							</a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
-										<div class="u-img"><img src="{% static 'img/profile.jpg' %}" alt="user"></div>
+										<div class="u-img"><img src="{% static 'img/profile.png' %}" alt="user"></div>
 										<div class="u-text">
 											<h4>{{ request.user.username }}</h4>
 											<p class="text-muted">{{ request.user.email }}</p>
@@ -118,7 +119,7 @@
 			<div class="scrollbar-inner sidebar-wrapper">
 				<div class="user">
 					<div class="photo">
-						<img src="{% static 'img/profile.jpg' %}">
+						<img src="{% static 'img/profile.png' %}">
 					</div>
 					<div class="info">
 						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">

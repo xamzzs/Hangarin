@@ -10,8 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
-from .models import Task, Category, Priority, SubTask, Note
-from .forms import TaskForm, SubTaskForm, SubTaskWithParentForm, CategoryForm, PriorityForm, NoteForm, NoteWithTaskForm
+from hangarin.models import Task, Category, Priority, SubTask, Note
+from hangarin.forms import TaskForm, SubTaskForm, SubTaskWithParentForm, CategoryForm, PriorityForm, NoteForm, NoteWithTaskForm
 
 
 @login_required
@@ -85,6 +85,21 @@ class TaskListView(LoginRequiredMixin, ListView):
                 Q(deadline__icontains=query)  # Searches deadline as string (YYYY-MM-DD format)
             )
         
+        # Apply status filter
+        status_filter = self.request.GET.get('status')
+        if status_filter:
+            qs = qs.filter(status=status_filter)
+        
+        # Apply priority filter
+        priority_filter = self.request.GET.get('priority')
+        if priority_filter:
+            qs = qs.filter(priority__id=priority_filter)
+        
+        # Apply category filter
+        category_filter = self.request.GET.get('category')
+        if category_filter:
+            qs = qs.filter(category__id=category_filter)
+        
         # Apply ordering
         order_by = self.request.GET.get('order_by', '-created_at')
         if order_by:
@@ -95,6 +110,9 @@ class TaskListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['order_by'] = self.request.GET.get('order_by', '-created_at')
+        context['categories'] = Category.objects.all()
+        context['priorities'] = Priority.objects.all()
+        context['status_choices'] = Task.STATUS_CHOICES
         return context
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -107,6 +125,21 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         messages.success(self.request, 'Task created successfully!')
         return super().form_valid(form)
+
+
+class TaskDetailView(LoginRequiredMixin, DetailView):
+    """Display task details"""
+    model = Task
+    template_name = 'task_detail.html'
+    context_object_name = 'task'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get related subtasks and notes
+        context['subtasks'] = self.object.subtasks.all()
+        context['notes'] = self.object.notes.all()
+        return context
+
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing task"""
@@ -153,6 +186,11 @@ class SubTaskListView(LoginRequiredMixin, ListView):
                 Q(status__icontains=query)
             )
         
+        # Apply status filter
+        status_filter = self.request.GET.get('status')
+        if status_filter:
+            qs = qs.filter(status=status_filter)
+        
         # Apply ordering
         order_by = self.request.GET.get('order_by', '-created_at')
         if order_by:
@@ -163,6 +201,7 @@ class SubTaskListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['order_by'] = self.request.GET.get('order_by', '-created_at')
+        context['status_choices'] = SubTask.STATUS_CHOICES
         return context
 
 class SubTaskCreateView(LoginRequiredMixin, CreateView):

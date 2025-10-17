@@ -162,8 +162,8 @@ ACCOUNT_SIGNUP_FIELDS = [
 
 PWA_APP_NAME = 'Hangarin'
 PWA_APP_DESCRIPTION = "Task Management System"
-PWA_APP_THEME_COLOR = '#34C759'
-PWA_APP_BACKGROUND_COLOR = '#FFFFFF'
+PWA_APP_THEME_COLOR = '#4a90e2'
+PWA_APP_BACKGROUND_COLOR = '#f0f2f5'
 PWA_APP_DISPLAY = 'standalone'
 PWA_APP_SCOPE = '/'
 PWA_APP_ORIENTATION = 'portrait'
@@ -171,22 +171,21 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        'src': '/static/img/hangarin-icon.svg',
-        'sizes': '192x192'
+        'src': '/static/img/Hangarin_logo.png',
+        'sizes': '192x192',
+        'type': 'image/png'
     },
     {
-        'src': '/static/img/hangarin-icon.svg',
-        'sizes': '512x512'
+        'src': '/static/img/Hangarin_logo.png',
+        'sizes': '512x512',
+        'type': 'image/png'
     }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': '/static/img/hangarin-icon.svg',
-        'sizes': '192x192'
-    },
-    {
-        'src': '/static/img/hangarin-icon.svg',
-        'sizes': '512x512'
+        'src': '/static/img/Hangarin_logo.png',
+        'sizes': '192x192',
+        'type': 'image/png'
     }
 ]
 PWA_APP_DIR = 'ltr'

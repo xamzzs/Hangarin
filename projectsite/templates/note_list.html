@@ -73,7 +73,7 @@
                         <tbody>
                             {% for note in notes %}
                             <tr>
-                                <td>{{ note.task.title }}</td>
+                                <td><strong>{{ note.task.title }}</strong></td>
                                 <td>{{ note.content|truncatewords:15 }}</td>
                                 <td>
                                     <small class="text-muted">

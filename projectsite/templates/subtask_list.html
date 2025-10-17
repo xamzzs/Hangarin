@@ -20,7 +20,7 @@
             <div class="card-body">
                 <!-- Search and Filter Section -->
                 <form method="get" class="mb-4">
-                    <div class="row g-3 align-items-center">
+                    <div class="row g-3 align-items-center mb-3">
                         <!-- Search Box -->
                         <div class="col-md-8">
                             <div class="input-group">
@@ -35,7 +35,7 @@
                                 <button class="btn" type="submit" style="background-color: #34C759; color: white; border: none;">
                                     <i class="bi bi-search"></i> Search
                                 </button>
-                                {% if request.GET.q %}
+                                {% if request.GET.q or request.GET.status %}
                                 <a href="{% url 'subtask-list' %}" class="btn btn-outline-secondary">
                                     <i class="bi bi-x-circle"></i> Clear
                                 </a>
@@ -46,14 +46,31 @@
                         <div class="col-md-4">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0">
-                                    <i class="bi bi-funnel text-muted"></i>
+                                    <i class="bi bi-sort-down text-muted"></i>
                                 </span>
                                 <select name="order_by" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
                                     <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
                                     <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Oldest First</option>
                                     <option value="title" {% if order_by == 'title' %}selected{% endif %}>Title (A-Z)</option>
                                     <option value="-title" {% if order_by == '-title' %}selected{% endif %}>Title (Z-A)</option>
-                                    <option value="status" {% if order_by == 'status' %}selected{% endif %}>Status</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Row -->
+                    <div class="row g-3 align-items-center">
+                        <!-- Status Filter -->
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-funnel text-muted"></i>
+                                </span>
+                                <select name="status" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
+                                    <option value="">Status</option>
+                                    {% for status_key, status_label in status_choices %}
+                                    <option value="{{ status_key }}" {% if request.GET.status == status_key %}selected{% endif %}>{{ status_label }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>

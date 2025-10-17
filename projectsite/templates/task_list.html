@@ -19,9 +19,9 @@
             <div class="card-body">
                 <!-- Search and Filter Section -->
                 <form method="get" class="mb-4">
-                    <div class="row g-3 align-items-center">
+                    <div class="row g-3 align-items-center mb-3">
                         <!-- Search Box -->
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0">
                                     <i class="bi bi-search text-muted"></i>
@@ -34,7 +34,7 @@
                                 <button class="btn" type="submit" style="background-color: #34C759; color: white; border: none;">
                                     <i class="bi bi-search"></i> Search
                                 </button>
-                                {% if request.GET.q %}
+                                {% if request.GET.q or request.GET.status or request.GET.priority or request.GET.category %}
                                 <a href="{% url 'task-list' %}" class="btn btn-outline-secondary">
                                     <i class="bi bi-x-circle"></i> Clear
                                 </a>
@@ -42,10 +42,10 @@
                             </div>
                         </div>
                         <!-- Sort Dropdown -->
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0">
-                                    <i class="bi bi-funnel text-muted"></i>
+                                    <i class="bi bi-sort-down text-muted"></i>
                                 </span>
                                 <select name="order_by" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
                                     <option value="-created_at" {% if order_by == '-created_at' %}selected{% endif %}>Newest First</option>
@@ -54,8 +54,52 @@
                                     <option value="-title" {% if order_by == '-title' %}selected{% endif %}>Title (Z-A)</option>
                                     <option value="deadline" {% if order_by == 'deadline' %}selected{% endif %}>Deadline (Earliest)</option>
                                     <option value="-deadline" {% if order_by == '-deadline' %}selected{% endif %}>Deadline (Latest)</option>
-                                    <option value="status" {% if order_by == 'status' %}selected{% endif %}>Status</option>
-                                    <option value="priority__name" {% if order_by == 'priority__name' %}selected{% endif %}>Priority</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Row -->
+                    <div class="row g-3 align-items-center">
+                        <!-- Status Filter -->
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-funnel text-muted"></i>
+                                </span>
+                                <select name="status" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
+                                    <option value="">Status</option>
+                                    {% for status_key, status_label in status_choices %}
+                                    <option value="{{ status_key }}" {% if request.GET.status == status_key %}selected{% endif %}>{{ status_label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Priority Filter -->
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-funnel text-muted"></i>
+                                </span>
+                                <select name="priority" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
+                                    <option value="">Priority</option>
+                                    {% for priority in priorities %}
+                                    <option value="{{ priority.id }}" {% if request.GET.priority|stringformat:"s" == priority.id|stringformat:"s" %}selected{% endif %}>{{ priority.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Category Filter -->
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-funnel text-muted"></i>
+                                </span>
+                                <select name="category" class="form-select border-start-0 ps-0" onchange="this.form.submit()">
+                                    <option value="">Category</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if request.GET.category|stringformat:"s" == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -68,7 +112,6 @@
                     <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 50px;">#</th>
                                     <th><i class="bi bi-card-text"></i> Title & Description</th>
                                     <th style="width: 120px;"><i class="bi bi-activity"></i> Status</th>
                                     <th style="width: 130px;"><i class="bi bi-calendar-event"></i> Deadline</th>
@@ -80,7 +123,6 @@
                             <tbody>
                                 {% for task in object_list %}
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
                                     <td>
                                         <strong>{{ task.title }}</strong>
                                         <br>
@@ -93,15 +135,18 @@
                                     <td>{{ task.category.name }}</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
+                                            <a href="{% url 'task-detail' task.pk %}" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               title="View Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
                                             <a href="{% url 'task-update' task.pk %}" 
                                                class="btn btn-sm btn-primary" 
-                                               data-toggle="tooltip" 
                                                title="Edit Task">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <a href="{% url 'task-delete' task.pk %}" 
                                                class="btn btn-sm btn-danger" 
-                                               data-toggle="tooltip" 
                                                title="Delete Task">
                                                 <i class="bi bi-trash"></i>
                                             </a>
