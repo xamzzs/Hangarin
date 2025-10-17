@@ -5804,9 +5804,30 @@ body {
 
 /* Mobile: keep username hidden per original behavior */
 @media (max-width: 991px) {
-  /* .topbar-nav .profile-pic span { display: none !important; }  -- removed to always show username */
+  /* Mobile: keep username hidden per original behavior but ensure avatar + icons remain visible */
   .main-header nav.navbar .container-fluid { justify-content: flex-start !important; }
   .main-header nav.navbar .nav-search { width: 100% !important; max-width: none !important; }
+
+  /* Pin the topbar icons and profile to the right edge on small screens so they're always tappable */
+  .main-header nav.navbar .topbar-nav {
+    position: absolute !important;
+    right: 12px !important;
+    top: 0 !important;
+    height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    z-index: 1300 !important;
+    background: transparent !important;
+  }
+
+  /* Ensure avatar image is visible and not clipped */
+  .main-header nav.navbar .topbar-nav .profile-pic img.img-circle {
+    display: block !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+  }
 }
 
 /*     Badge    */
@@ -6801,6 +6822,55 @@ body {
   display: flex !important;
   align-items: center !important;
   gap: 14px !important;
+}
+
+/* Center logo (and adjacent profile) in header like image1 while keeping hamburger left and icons right */
+.main-header .logo-header {
+  width: 100% !important;
+  justify-content: center !important; /* center children (logo + profile group) */
+  position: relative !important;
+  border-right: none !important; /* remove visual right border when centered */
+}
+
+.main-header .logo-header .navbar-toggler {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  opacity: 1 !important;
+}
+
+/* Keep profile next to the logo centered on medium+ screens */
+@media (min-width: 768px) {
+  .main-header .logo-header .dropdown { display: flex !important; align-items: center !important; }
+  .main-header .logo-header .dropdown .profile-pic span { display: inline-block !important; color: #FFE699 !important; margin-left: 8px !important; }
+}
+
+@media (max-width: 767px) {
+  /* On small screens, show the avatar (no username) at the right edge and keep header compact */
+  .main-header .logo-header .dropdown {
+    display: flex !important;
+    align-items: center !important;
+    position: absolute !important;
+    right: 12px !important; /* right edge */
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1300 !important;
+  }
+  /* Hide the inline username on mobile to save space */
+  .main-header .logo-header .dropdown span { display: none !important; }
+
+  /* Move the topbar icons slightly left so they don't overlap the avatar */
+  .main-header nav.navbar .topbar-nav {
+    position: absolute !important;
+    right: 56px !important; /* leave room for avatar */
+    top: 0 !important;
+    height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    z-index: 1290 !important;
+  }
 }
 .navbar-header {
     background-color: #1a1a1a !important;

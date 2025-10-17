@@ -77,6 +77,32 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				
+				<!-- Profile shown beside logo -->
+				<div class="dropdown d-none d-lg-flex align-items-center" style="margin-left:12px;">
+					<a class="dropdown-toggle profile-pic d-flex align-items-center" data-toggle="dropdown" href="#" aria-expanded="false" style="color: inherit;">
+						<img src="{% static 'img/profile.png' %}" alt="user-img" width="36" class="img-circle">
+						<span style="display:inline-block; margin-left:8px;">{{ request.user.username }}</span>
+					</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li>
+							<div class="user-box">
+								<div class="u-img"><img src="{% static 'img/profile.png' %}" alt="user"></div>
+								<div class="u-text">
+									<h4>{{ request.user.username }}</h4>
+									<p class="text-muted">{{ request.user.email }}</p>
+									<a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+								</div>
+							</div>
+						</li>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
+						<a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> Logout</a>
+					</ul>
+				</div>
 			</div>
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
@@ -124,31 +150,7 @@
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
-								<img src="{% static 'img/profile.png' %}" alt="user-img" width="36" class="img-circle">
-								<span>{{ request.user.username }}</span>
-							</a>
-							<ul class="dropdown-menu dropdown-user">
-								<li>
-									<div class="user-box">
-										<div class="u-img"><img src="{% static 'img/profile.png' %}" alt="user"></div>
-										<div class="u-text">
-											<h4>{{ request.user.username }}</h4>
-											<p class="text-muted">{{ request.user.email }}</p>
-											<a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
-										</div>
-									</div>
-								</li>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
-								<a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> Logout</a>
-							</ul>
-						</li>
+
 					</ul>
 				</div>
 			</nav>
